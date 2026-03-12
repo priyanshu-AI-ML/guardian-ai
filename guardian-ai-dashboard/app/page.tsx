@@ -282,9 +282,9 @@ export default function Dashboard() {
               <div style={{ fontSize: 11, color: "#4a4a6a", letterSpacing: "0.1em", marginBottom: 14 }}>MODEL INFO</div>
               {[
                 ["Base Model", "Guardian-AI-Twitter"],
-                ["F1 Score", "0.8245"],
-                ["Accuracy", "92.15%"],
-                ["Classes", "4 labels"],
+                ["F1 Score", "0.7503"],
+                ["Accuracy", "90.48%"],
+                ["Classes", "3 labels"],
                 ["Max Tokens", "512"],
                 ["Status", "Active ✅"],
               ].map(([k, v]) => (
