@@ -49,7 +49,8 @@ export default function Dashboard() {
   const [input, setInput] = useState("");
   const [username, setUsername] = useState("@you");
   const [loading, setLoading] = useState(false);
-  const [apiStatus, setApiStatus] = useState("checking");
+  const [apiStatus, setApiStatus] = useState<"online" | "offline" | "checking">("checking");
+  const [errorMsg, setErrorMsg] = useState("");
   const [stats, setStats] = useState<Stats>({ total: 0, flagged: 0, clean: 0, offensive: 0, hate: 0, vulgar: 0 });
 
   useEffect(() => {
@@ -86,8 +87,10 @@ export default function Dashboard() {
       setFeed(withTime);
       updateStats(withTime);
       setApiStatus("online");
-    } catch {
+    } catch (err: any) {
+      console.error("Fetch error:", err);
       setApiStatus("offline");
+      setErrorMsg(err.message || "Unknown connection error");
     }
     setLoading(false);
   };
@@ -206,7 +209,14 @@ export default function Dashboard() {
               <div style={{ maxHeight: 380, overflowY: "auto" }}>
                 {feed.length === 0 ? (
                   <div style={{ padding: 40, textAlign: "center", color: "#4a4a6a", fontSize: 13 }}>
-                    {apiStatus === "offline" ? "⚠️ API offline — start backend on port 8000" : "Loading..."}
+                    {apiStatus === "offline" ? (
+                      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                        <div>⚠️ API OFFLINE</div>
+                        <div style={{ fontSize: 10, opacity: 0.7 }}>Attempting to reach: {API}</div>
+                        <div style={{ fontSize: 10, color: "#ef4444" }}>Error: {errorMsg}</div>
+                        <div style={{ fontSize: 10 }}>Start backend on port 8000 (Local) or check Railway URL</div>
+                      </div>
+                    ) : "Loading..."}
                   </div>
                 ) : feed.map(item => {
                   const color = COLORS[item.label] || "#888";
