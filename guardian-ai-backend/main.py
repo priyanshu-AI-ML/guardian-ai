@@ -16,6 +16,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.middleware("http")
+async def clean_path_middleware(request, call_next):
+    # Collapse multiple slashes (e.g., //health -> /health)
+    path = request.scope['path']
+    if "//" in path:
+        request.scope['path'] = re.sub(r'/+', '/', path)
+    return await call_next(request)
+
 MODEL = os.getenv("MODEL_NAME", "unitary/toxic-bert")
 
 print(f"Loading model: {MODEL}")
