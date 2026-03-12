@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const API = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000").replace(/\/$/, "");
 
 const COLORS: Record<string, string> = {
   clean: "#22c55e", toxic: "#f59e0b", offensive: "#f59e0b", hate: "#ef4444", hate_speech: "#ef4444", vulgar: "#f97316",
