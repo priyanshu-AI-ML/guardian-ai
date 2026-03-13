@@ -6,18 +6,18 @@ const API = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000").replace
 
 const COLORS: Record<string, string> = {
   clean: "#22c55e", toxic: "#f59e0b", offensive: "#f59e0b", hate: "#ef4444", hate_speech: "#ef4444", vulgar: "#f97316",
-  LABEL_0: "#22c55e", LABEL_1: "#f59e0b", LABEL_2: "#ef4444", LABEL_3: "#f97316",
+  LABEL_0: "#22c55e", LABEL_1: "#f59e0b", LABEL_2: "#ef4444", LABEL_3: "#f97316",   
 };
 
 const LABEL_DISPLAY: Record<string, string> = {
   clean: "CLEAN", toxic: "TOXIC", offensive: "TOXIC", hate: "HATE", hate_speech: "HATE", vulgar: "VULGAR",
-  LABEL_0: "CLEAN", LABEL_1: "TOXIC", LABEL_2: "HATE", LABEL_3: "VULGAR",
+  LABEL_0: "CLEAN", LABEL_1: "TOXIC", LABEL_2: "HATE", LABEL_3: "VULGAR",   
 };
 
 const SAMPLE_TWEETS = [
   { text: "Just had amazing chai in Jaipur ☕", username: "@priya_sharma" },
   { text: "You are the dumbest person alive", username: "@anon_user" },
-  { text: "These people are disgusting and should disappear", username: "@troll99" },
+  { text: "These people are disgusting and should disappear", username: "@troll99" },  
   { text: "Beautiful sunset from my rooftop today 🌅", username: "@raj_photos" },
   { text: "I want to kill all these idiots seriously", username: "@angry_user" },
   { text: "Great match yesterday, loved every moment!", username: "@cricket_fan" },
@@ -26,7 +26,7 @@ const SAMPLE_TWEETS = [
 interface FeedItem {
   id: number;
   username: string;
-  original: string;
+  original: string;  
   redacted: string;
   label: string;
   confidence: number;
@@ -45,11 +45,11 @@ interface Stats {
 }
 
 export default function Dashboard() {
-  const [feed, setFeed] = useState<FeedItem[]>([]);
+  const [feed, setFeed]=useState<FeedItem[]>([]);
   const [input, setInput] = useState("");
   const [username, setUsername] = useState("@you");
   const [loading, setLoading] = useState(false);
-  const [apiStatus, setApiStatus] = useState<"online" | "offline" | "checking">("checking");
+  const [apiStatus, setApiStatus]=useState<"online" | "offline" | "checking">("checking");
   const [errorMsg, setErrorMsg] = useState("");
   const [stats, setStats] = useState<Stats>({ total: 0, flagged: 0, clean: 0, offensive: 0, hate: 0, vulgar: 0 });
 
@@ -67,7 +67,7 @@ export default function Dashboard() {
       flagged: feedData.filter(f => f.flagged).length,
       clean: feedData.filter(f => ["clean", "LABEL_0"].includes(f.label)).length,
       offensive: feedData.filter(f => ["toxic", "offensive", "LABEL_1"].includes(f.label)).length,
-      hate: feedData.filter(f => ["hate", "hate_speech", "LABEL_2"].includes(f.label)).length,
+      hate: feedData.filter(f => ["hate", "hate_speech", "LABEL_2"].includes(f.label)).length,   
       vulgar: feedData.filter(f => ["vulgar", "LABEL_3"].includes(f.label)).length,
     });
   };
@@ -78,7 +78,7 @@ export default function Dashboard() {
       const res = await fetch(`${API}/analyze/batch`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tweets: SAMPLE_TWEETS }),
+        body: JSON.stringify({ tweets: SAMPLE_TWEETS }), 
       });
       const data = await res.json();
       const withTime = data.map((item: FeedItem, i: number) => ({
@@ -116,7 +116,7 @@ export default function Dashboard() {
     setLoading(false);
   };
 
-  const pieData = [
+  const pieData=[
     { name: "Clean", value: stats.clean, color: "#22c55e" },
     { name: "Toxic", value: stats.offensive, color: "#f59e0b" },
     { name: "Hate", value: stats.hate, color: "#ef4444" },
@@ -140,7 +140,7 @@ export default function Dashboard() {
           <div>
             <div style={{ fontSize: 18, fontWeight: 700, color: "#fff" }}>
               GUARDIAN<span style={{ color: "#6366f1" }}>AI</span>
-            </div>
+            </div> 
             <div style={{ fontSize: 10, color: "#4a4a6a", letterSpacing: "0.1em" }}>TWITTER CONTENT MODERATION</div>
           </div>
         </div>
@@ -153,10 +153,10 @@ export default function Dashboard() {
       <div style={{ padding: "24px 28px" }}>
 
         {/* Stat Cards */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16, marginBottom: 24 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16, marginBottom: 24 }}>  
           {[
             { label: "TOTAL ANALYZED", value: stats.total, color: "#6366f1" },
-            { label: "FLAGGED", value: stats.flagged, color: "#ef4444" },
+            { label: "FLAGGED", value: stats.flagged, color: "#ef4444" },  
             { label: "CLEAN", value: stats.clean, color: "#22c55e" },
             { label: "TOXIC", value: stats.offensive, color: "#f59e0b" },
             { label: "HATE", value: stats.hate, color: "#ef4444" },
@@ -177,7 +177,7 @@ export default function Dashboard() {
             {/* Input */}
             <div style={{ background: "#111118", border: "1px solid #1e1e2e", borderRadius: 12, padding: 20 }}>
               <div style={{ fontSize: 11, color: "#4a4a6a", letterSpacing: "0.1em", marginBottom: 12 }}>ANALYZE A TWEET</div>
-              <input
+              <input 
                 value={username}
                 onChange={e => setUsername(e.target.value)}
                 placeholder="@username"
@@ -198,10 +198,10 @@ export default function Dashboard() {
               </button>
             </div>
 
-            {/* Feed */}
+            {/* Feed */}  
             <div style={{ background: "#111118", border: "1px solid #1e1e2e", borderRadius: 12, overflow: "hidden" }}>
               <div style={{ padding: "16px 20px", borderBottom: "1px solid #1e1e2e", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <div style={{ fontSize: 11, color: "#4a4a6a", letterSpacing: "0.1em" }}>CONTENT FEED</div>
+                <div style={{ fontSize: 11, color: "#4a4a6a", letterSpacing: "0.1em" }}>CONTENT FEED</div> 
                 <button onClick={loadDemoFeed} style={{ fontSize: 11, color: "#6366f1", background: "none", border: "1px solid #6366f1", borderRadius: 6, padding: "4px 12px", cursor: "pointer", fontFamily: "monospace" }}>
                   ↺ RELOAD DEMO
                 </button>
@@ -255,7 +255,7 @@ export default function Dashboard() {
                   <ResponsiveContainer width="100%" height={180}>
                     <PieChart>
                       <Pie data={pieData} cx="50%" cy="50%" innerRadius={45} outerRadius={70} paddingAngle={3} dataKey="value">
-                        {pieData.map((entry, i) => <Cell key={i} fill={entry.color} />)}
+                        {pieData.map((entry, i) => <Cell key={i} fill={entry.color} />)}   
                       </Pie>
                       <Tooltip contentStyle={{ background: "#111118", border: "1px solid #1e1e2e", fontSize: 11, fontFamily: "monospace" }} />
                     </PieChart>
@@ -304,7 +304,7 @@ export default function Dashboard() {
                 { label: "🚫 HATE", action: "Full removal", color: "#ef4444" },
               ].map(r => (
                 <div key={r.label} style={{ marginBottom: 10, padding: "8px 10px", background: `${r.color}15`, borderRadius: 6, border: `1px solid ${r.color}30` }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: r.color }}>{r.label}</div>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: r.color }}>{r.label}</div>  
                   <div style={{ fontSize: 10, color: "#4a4a6a", marginTop: 2 }}>{r.action}</div>
                 </div>
               ))}

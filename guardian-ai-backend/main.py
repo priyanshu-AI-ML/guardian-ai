@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from transformers import pipeline
 import os, re
 from dotenv import load_dotenv
+import sys
 
 load_dotenv()
 
